@@ -1,5 +1,7 @@
 import dl_translate as dlt
+import string
 import nltk
+#nltk.download('punkt')
 from nltk.translate.bleu_score import sentence_bleu
 
 
@@ -37,11 +39,14 @@ def print_results(model, src_lang, tgt_lang, input_text):
 # Prints input, output and evaluation line by line
 def print_result_tokens(model, src_lang, tgt_lang, input_text):
     output = spin(model=model, src_lang=src_lang, tgt_lang=tgt_lang, input_text=input_text)
-    output_tokens = nltk.word_tokenize(output)
+    punctRemover = str.maketrans('', '', string.punctuation)
+    output = output.translate(punctRemover)               # remove punctuation to compare words only
+    input_text = input_text.translate(punctRemover)
+    output_tokens = nltk.word_tokenize(output)                  # split sentence into tokens
     input_tokens = nltk.word_tokenize(input_text)
     print("-------------------------------------------------------------------------------------------------------")
-    print("Input:  " + input_tokens)
-    print("Output: " + output_tokens)
+    print("Input:  " + ' '.join(input_tokens))
+    print("Output: " + ' '.join(output_tokens))
     print("Spun:   " + str(evaluate_output(input_tokens, output_tokens)))
 
 
