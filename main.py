@@ -24,11 +24,11 @@ def print_results(model, src_lang, tgt_lang, input_text):
     print("Spun:   " + str(evaluate_output(input_text, output)))
 
 
-
+models = [dlt.TranslationModel("mbart50"), dlt.TranslationModel("m2m100")]
 model = dlt.TranslationModel("mbart50")
 src_lang = "German"
 tgt_lang = "English"
 input_text = "Der UN-Generalsekretär sprach auf der letzten Pressekonferenz von Angriffen auf die Persönlichkeitsrechte der Bürger Südamerikas."
 
-print_results(model=model, src_lang=src_lang,tgt_lang=tgt_lang,input_text=input_text)
+print_results(model=models[0], src_lang=src_lang,tgt_lang=tgt_lang,input_text=input_text)
 
