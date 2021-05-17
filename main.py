@@ -8,6 +8,7 @@ import math
 import re
 from collections import Counter
 from strsimpy.cosine import Cosine
+from bert_score import score
 
 
 def cosine(input_text, output_text):
@@ -72,6 +73,8 @@ def print_result_tokens(model, src_lang, tgt_lang, input_text):
     print("Output: " + ' '.join(output_tokens))
     print("Spun:   " + str(evaluate_output(input_tokens, output_tokens)))
     print("Cosine: " + str(cosine(input_text, output)))
+    P, R, F1 = score([input_text], [output], lang="de", verbose=True)
+    print(f"BERTSc:  {F1.mean():.3f}")
 
 
 models = [dlt.TranslationModel("mbart50"), dlt.TranslationModel("m2m100")]
