@@ -1,7 +1,10 @@
 import dl_translate as dlt
 import string
 import nltk
-import numpy
+import numpy as np
+import pandas as pd
+import json
+import uuid
 #nltk.download('punkt')
 from nltk.translate.bleu_score import sentence_bleu
 import math
@@ -73,17 +76,44 @@ tgt_lang = "English"
 
 # print_results(model=models[0], src_lang=src_lang,tgt_lang=tgt_lang,input_text=input_text)
 
-
+'''
 text_list = []
-corpusfile = open('res\de\deu_de-news-wrt_2019_1K\deu_de-news-wrt_2019_1K-sentences.txt', 'r', encoding='utf-8')
+max_entries = 50
+cur_entry = 0
+corpusfile = open('res\en\eng_news_2020_10K\eng_news_2020_10K-sentences.txt', 'r', encoding='utf-8')
 for line in corpusfile.readlines():
-    text_list.append(line.split("\t")[1].rstrip()) # remove leading number, tab and trailing line feed
-    # print(line.split("\t")[1])
+    if cur_entry < max_entries:
+        text_list.append(line.split("\t")[1].rstrip()) # remove leading number, tab and trailing line feed
+        cur_entry += 1
+        print(line)
+        # print(line.split("\t")[1])
+    else:
+        break
 
+
+text_dict = {'input': [], 'output_de': [], 'output_cn': []}
+
+cur_entry = 0
+for sent in text_list:
+    text_dict['input'].append(sent)
+    text_dict['output_de'].append(spin(models[0], 'English', 'German', sent))
+    text_dict['output_cn'].append(spin(models[0], 'English', 'Chinese', sent))
+    cur_entry += 1
+    print(cur_entry)
+
+data = pd.DataFrame(text_dict)
+file_name = 'bin\\' + str(uuid.uuid4()) + '.json'
+data.to_json(path_or_buf=file_name)
+data = pd.read_json(file_name)
+'''
 '''
 for sentence in text_list:
     print_results(models[0],src_lang,tgt_lang,sentence)
-'''
+
 
 for sentence in text_list:
     print_result_tokens(models[0],src_lang,tgt_lang,sentence)
+'''
+
+data = pd.read_json('bin\\1ec24800-8669-48bc-8d30-a1288d777c8e.json')
+print(data)

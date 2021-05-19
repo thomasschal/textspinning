@@ -52,10 +52,9 @@ tgt_lang = "English"
 text_list = []
 rnd_list = []
 text_dict = {'text': [], 'random': []}
-corpusfile = open('res\de\deu_de-news-wrt_2019_1K\deu_de-news-wrt_2019_1K-sentences.txt', 'r', encoding='utf-8')
+corpusfile = open('res\en\eng_news_2020_10K\eng_news_2020_10K-sentences.txt', 'r', encoding='utf-8')
 for line in corpusfile.readlines():
     text_list.append(line.split("\t")[1].rstrip()) # remove leading number, tab and trailing line feed
-    rnd_list.append('Test')
     # print(line.split("\t")[1])
 
 for text in text_list:
@@ -65,9 +64,6 @@ for random in rnd_list:
     text_dict['random'].append(random)
 
 data = pd.DataFrame(text_dict)
-data.shape
-print(data)
 file_name = 'res\dumps\\' + str(uuid.uuid4()) + '.json'
 data.to_json(path_or_buf=file_name)
 data = pd.read_json(file_name)
-print(data)
