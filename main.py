@@ -11,23 +11,12 @@ from strsimpy.cosine import Cosine
 from bert_score import score
 
 
+# Returns value between 1 and 0; 1 = equal; 0 = no similarity. Uses strsimpy package to calc cosine similarity
 def cosine(input_text, output_text):
     cosine = Cosine(2)
     p0 = cosine.get_profile(input_text)
     p1 = cosine.get_profile(output_text)
     return cosine.similarity_profiles(p0, p1)
-
-
-def text_to_vector(tokens):
-    return Counter(tokens)
-
-
-def cosine_distance(u, v):
-    """
-    Returns the cosine of the angle between vectors v and u. This is equal to
-    u.v / |u||v|.
-    """
-    return numpy.dot(u, v) / (math.sqrt(numpy.dot(u, u)) * math.sqrt(numpy.dot(v, v)))
 
 
 # Returns True if text is spun, returns False if text is equal
@@ -36,6 +25,7 @@ def evaluate_output(input, output):
         return False
     else:
         return True
+
 
 # Returns True if text is spun, returns False if text is equal
 def evaluate_output_tokens(input, output):
@@ -78,19 +68,17 @@ def print_result_tokens(model, src_lang, tgt_lang, input_text):
 
 
 models = [dlt.TranslationModel("mbart50"), dlt.TranslationModel("m2m100")]
-model = dlt.TranslationModel("mbart50")
 src_lang = "German"
 tgt_lang = "English"
-input_text = "Der UN-Generalsekretär sprach auf der letzten Pressekonferenz von Angriffen auf die Persönlichkeitsrechte der Bürger Südamerikas."
 
-#print_results(model=models[0], src_lang=src_lang,tgt_lang=tgt_lang,input_text=input_text)
+# print_results(model=models[0], src_lang=src_lang,tgt_lang=tgt_lang,input_text=input_text)
 
 
 text_list = []
-corpusfile = open('res\deu_de-news-wrt_2019_1K\deu_de-news-wrt_2019_1K-sentences.txt', 'r', encoding='utf-8')
+corpusfile = open('res\de\deu_de-news-wrt_2019_1K\deu_de-news-wrt_2019_1K-sentences.txt', 'r', encoding='utf-8')
 for line in corpusfile.readlines():
     text_list.append(line.split("\t")[1].rstrip()) # remove leading number, tab and trailing line feed
-    #print(line.split("\t")[1])
+    # print(line.split("\t")[1])
 
 '''
 for sentence in text_list:
