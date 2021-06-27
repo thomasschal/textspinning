@@ -12,7 +12,7 @@ import re
 from collections import Counter
 from strsimpy.cosine import Cosine
 from bert_score import score
-
+from strsimpy.metric_lcs import MetricLCS
 
 # Returns value between 1 and 0; 1 = equal; 0 = no similarity. Uses strsimpy package to calc cosine similarity
 def cosine(input_text, output_text):
@@ -62,11 +62,12 @@ def print_result_tokens(model, src_lang, tgt_lang, input_text):
     output_tokens = nltk.word_tokenize(output)                  # split sentence into tokens
     input_tokens = nltk.word_tokenize(input_text)
     print("-------------------------------------------------------------------------------------------------------")
-    print("Input:  " + ' '.join(input_tokens))
-    print("Output: " + ' '.join(output_tokens))
-    print("Spun:   " + str(evaluate_output(input_tokens, output_tokens)))
-    print("Cosine: " + str(cosine(input_text, output)))
-    P, R, F1 = score([input_text], [output], lang="de", verbose=True)
+    print("Input:       " + ' '.join(input_tokens))
+    print("Output:      " + ' '.join(output_tokens))
+    print("Spun:        " + str(evaluate_output(input_tokens, output_tokens)))
+    print("Cosine:      " + str(cosine(input_text, output)))
+    print("MetricLCS:   " + str(metric_lcs.distance(input_text, output)))
+    P, R, F1 = score([input_text], [output], lang="en", verbose=True)
     print(f"BERTSc:  {F1.mean():.3f}")
 
 
